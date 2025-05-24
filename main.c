@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
     char** lines = read_file_lines(argv[1], &line_count);
 
     // zu é para printar numeros do tipo size_t, sem sinal
-    printf("read %zu lines (excluding empty and comment lines):\n\n", line_count);
+    printf("read %zu lines (excluding empty and comment lines):\n\n", sizeof(encoded_fields_t), line_count);
     print_lines(lines, line_count);
     free_lines(lines);
 
