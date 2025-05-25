@@ -84,7 +84,7 @@ typedef union {
     } j;
 } encoded_fields_t;
 
-
+// instrução na forma final
 typedef struct {
     INST_TYPE type;
     encoded_fields_t fields; 

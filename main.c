@@ -11,20 +11,22 @@
 
 #define MAX_LINES 1024
 
-int main(int argc, char **argv) {
+int main() {
+    size_t line_count;
+    char** lines = read_file_lines("programa.asm", &line_count);
 
-    // erro caso não seja passado o o arquivo como parametro para leitura
-    if (argc < 2) {
-        fprintf(stderr, "usage: %s <filename>\n", argv[0]);
-        return 1;
+    size_t inst_count;
+    instruction_t* instructions = parse_lines(lines, line_count, &inst_count);
+
+    for (size_t i = 0; i < inst_count; i++) {
+        printf("linha %u: %s", instructions[i].line_number, instructions[i].mnemonic);
+        for (int j = 0; j < instructions[i].operand_count; j++)
+            printf(" %s", instructions[i].operands[j]);
+        if (instructions[i].label)
+            printf(" (label: %s)", instructions[i].label);
+        puts("");
     }
 
-    size_t line_count = 0;
-    char** lines = read_file_lines(argv[1], &line_count);
-
-    // zu é para printar numeros do tipo size_t, sem sinal
-    printf("read %zu lines (excluding empty and comment lines):\n\n", sizeof(encoded_fields_t), line_count);
-    print_lines(lines, line_count);
+    free_instructions(instructions, inst_count);
     free_lines(lines);
-
 }
