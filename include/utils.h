@@ -47,11 +47,11 @@ static inline char** read_file_lines(const char* filename, size_t* line_count) {
 
     int max_lines = 0;
     char **lines = NULL;
-    char buffer[LINE_MAX];
+    char buffer[SOURCE_LINE_MAX];
 
     *line_count = 0;
 
-    while (fgets(buffer, LINE_MAX, f)) {
+    while (fgets(buffer, SOURCE_LINE_MAX, f)) {
         buffer[strcspn(buffer, "\r\n")] = '\0';
 
         char *line = ltrim(buffer); // tira espaços iniciais nas linhas

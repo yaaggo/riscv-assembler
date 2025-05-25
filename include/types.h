@@ -1,9 +1,14 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#include <stdlib.h>
 #include <stdint.h>
+#include <string.h>
+#include <stdio.h>
+#include <ctype.h>
 
-#define LINE_MAX 256
+#define SOURCE_LINE_MAX 256
+#define BASE_ADDRESS 0x00400000
 
 // enum para o tipo da instrução
 typedef enum {
@@ -15,9 +20,16 @@ typedef enum {
 
 // para a tablela de simbolos (nao sei se vou fazer usando a tabela)
 typedef struct {
-    char *label;
+    char* label;
     uint32_t address;
 } symbol_t;
+
+typedef struct {
+    symbol_t* entries;
+    size_t count;
+    size_t capacity;
+} symbol_table_t;
+
 
 // struct parar representar a instrução depois do parser
 typedef struct {
@@ -26,6 +38,7 @@ typedef struct {
     char *operands[4];       // até 4 operandos
     int operand_count;       // qt. de operandos
     uint32_t line_number;    // linha no source code
+    uint32_t address;
 } instruction_t;
 
 // union utilizando bitfields para guardar as instruções 'encoded' 
