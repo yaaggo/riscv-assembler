@@ -10,7 +10,7 @@
 static inline void symbol_table_init(symbol_table_t* table) {
     table->count = 0;
     table->capacity = ST_INITIAL_CAPACITY;
-    table->entries = (symbol_t*)malloc(sizeof(symbol_t) * table->capacity);
+    table->entries = (symbol_t *)malloc(sizeof(symbol_t) * table->capacity);
     CHECK_ALLOC(table->entries, exit(EXIT_FAILURE));
 }
 

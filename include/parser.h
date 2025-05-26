@@ -69,7 +69,7 @@ static inline instruction_t parse_line(const char* line, uint32_t line_number) {
 
 // parse um vetor de linhas em vetor de instruções
 static inline instruction_t* parse_lines(char** lines, size_t line_count, size_t* out_count, symbol_table_t* table) {
-    instruction_t* instructions = malloc(line_count * sizeof(instruction_t));
+    instruction_t* instructions = (instruction_t *) malloc(line_count * sizeof(instruction_t));
     CHECK_ALLOC(instructions, return NULL);
 
     char* pending_label = NULL;
