@@ -95,6 +95,9 @@ typedef union {
         uint32_t imm10_1 : 10;
         uint32_t imm20   : 1;
     } j;
+
+    uint32_t word;
+    
 } encoded_fields_t;
 
 // instrução na forma final

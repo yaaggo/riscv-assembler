@@ -1,8 +1,4 @@
 // main.c
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 #include "include/utils.h"
 #include "include/tokenizer.h"
 #include "include/parser.h"
@@ -31,7 +27,7 @@ int main() {
         return 1;
     } 
 
-    printf("=== instrucoes ===\n");
+    printf("=== instructions ===\n");
     for (size_t i = 0; i < inst_count; i++) {
         instruction_dump(&instructions[i]);
     }

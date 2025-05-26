@@ -39,6 +39,11 @@ static inline instruction_t parse_line(const char* line, uint32_t line_number) {
     strncpy(buffer, line, SOURCE_LINE_MAX - 1);
     buffer[SOURCE_LINE_MAX - 1] = '\0';
 
+    char* comment_ptr = strchr(buffer, '#');
+    if (comment_ptr)
+        *comment_ptr = '\0';
+    rtrim(buffer);
+
     char* token = strtok(buffer, " \t");
 
     // caso tenha label
@@ -63,7 +68,7 @@ static inline instruction_t parse_line(const char* line, uint32_t line_number) {
 }
 
 // parse um vetor de linhas em vetor de instruções
-instruction_t* parse_lines(char** lines, size_t line_count, size_t* out_count, symbol_table_t* table) {
+static inline instruction_t* parse_lines(char** lines, size_t line_count, size_t* out_count, symbol_table_t* table) {
     instruction_t* instructions = malloc(line_count * sizeof(instruction_t));
     CHECK_ALLOC(instructions, return NULL);
 

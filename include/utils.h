@@ -18,9 +18,22 @@
         }                                                                               \
     } while (0)
 
+
+
 // remover os espaços do inicio da expressão
 static inline char* ltrim(char* str) {
     while (isspace((unsigned char)*str)) str++;
+    return str;
+}
+
+// analogamente só que do fim
+static inline char* rtrim(char* str) {
+    if (str == NULL || *str == '\0')
+        return str;
+    char* end = str + strlen(str) - 1;
+    while (end >= str && isspace((unsigned char)*end))
+        end--;
+    *(end + 1) = '\0';
     return str;
 }
 
