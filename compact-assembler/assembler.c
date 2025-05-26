@@ -879,11 +879,6 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
-    // print para debug
-    printf("--- iniciando segunda passagem (codificacao) ---\n");
-    printf("endereco   | codigo maq. (hex) | mnemonico\n");
-    printf("--------------------------------------------------\n");
-
     for (size_t i = 0; i < instruction_arr_count; ++i) {
         uint32_t current_instr_address = instructions[i].address;
 
@@ -892,7 +887,6 @@ int main(int argc, char *argv[]) {
 
         // caso consiga gerar a instrução, faz o print e converte paras jogar no mif
         if (machine_code != ENCODING_ERROR_SENTINEL) {
-            printf("0x%08x | 0x%08x        | %s\n", current_instr_address, machine_code, instructions[i].mnemonic);
             
             char binary_string[33];
             for (int bit_pos = 0; bit_pos < 32; ++bit_pos) {
@@ -951,7 +945,6 @@ int main(int argc, char *argv[]) {
 
         }
     } 
-    printf("--------------------------------------------------\n");
     fclose(mif_file);
 
     // liberando a memoria alocada
