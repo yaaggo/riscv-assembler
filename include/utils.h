@@ -46,13 +46,9 @@ static inline char* my_strdup(const char* s) {
     return copy;
 }
 
-/**
- * le um arquivo e retorna um vetor de strings.
- * 
- * parametros:
- *   - filename: nome do arquivo;
- *   - line_count: ponteiro para armazenar o número de linhas lidas.
- */
+
+// le um arquivo e retorna um vetor de strings.
+
 static inline char** read_file_lines(const char* filename, size_t* line_count) {  
     FILE* f = fopen(filename, "rb"); // abrindo para leitura de arquivo binário, pensando na compatibilidade
 

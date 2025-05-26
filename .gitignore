@@ -1,3 +1,6 @@
 .vscode
 a.exe
 memoria.mif
+compact-assembler/assembler.exe
+compact-assembler/a.exe
+compact-assembler/test.mif
