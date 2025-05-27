@@ -119,29 +119,39 @@ static inline uint32_t encode_instruction(const instruction_t* parsed_inst,
                 imm_val = (int32_t)((funct7_bits_for_shift << 5) | shamt_bits);
             } else {
 
-                if (parsed_inst->operand_count < 2 || parsed_inst->operand_count > 3) { // JALR pode ter 2 ou 3
+                if (parsed_inst->operand_count < 1 || parsed_inst->operand_count > 3) { // JALR pode ter 2 ou 3
                     fprintf(stderr, "erro (linha %u): instrucao '%s' (I-type) numero de operandos invalido.\n", parsed_inst->line_number, entry->mnemonic);
                     return ENCODING_ERROR_SENTINEL;
                 }
 
                 rd = get_register_number(parsed_inst->operands[0]);
                 if (strcmp(entry->mnemonic, "jalr") == 0) {
-
-                    if (parsed_inst->operand_count == 2) { // jalr rd, rs1  (imm é 0)
-                        rs1 = get_register_number(parsed_inst->operands[1]);
-                        imm_val = 0; // imm é opcional e default 0 para JALR sem ele
-                    } else { // jalr rd, rs1, imm  OU jalr rd, imm(rs1)
-
-                        // checar formato imm(rs1) para JALR
+                    if (parsed_inst->operand_count == 1) {
+                        // formato jalr ra
+                        rd = 0;
+                        rs1 = get_register_number(parsed_inst->operands[0]);
+                        imm_val = 0;
+                        imm_success = true;
+                    } else if (parsed_inst->operand_count == 2) {
+                        rd = get_register_number(parsed_inst->operands[0]);
                         char imm_str_jalr[32], rs1_str_jalr[8];
                         if (sscanf(parsed_inst->operands[1], "%31[^()](%7[^)])", imm_str_jalr, rs1_str_jalr) == 2) {
                             // formato jalr rd, imm(rs1)
                             rs1 = get_register_number(rs1_str_jalr);
                             imm_val = parse_immediate(imm_str_jalr, &imm_success);
-                        } else { // formato jalr rd, rs1, imm
-                             rs1 = get_register_number(parsed_inst->operands[1]);
-                             imm_val = parse_immediate(parsed_inst->operands[2], &imm_success);
+                        } else {
+                            // formato jalr rd, rs1 
+                            rs1 = get_register_number(parsed_inst->operands[1]);
+                            imm_val = 0;
+                            imm_success = true;
                         }
+                    } else if (parsed_inst->operand_count == 3) {
+                        rd = get_register_number(parsed_inst->operands[0]);
+                        rs1 = get_register_number(parsed_inst->operands[1]);
+                        imm_val = parse_immediate(parsed_inst->operands[2], &imm_success);
+                    } else {
+                        fprintf(stderr, "erro (linha %u): instrucao '%s' (JALR) requer 1, 2 ou 3 operandos. Recebido %d.\n", parsed_inst->line_number, entry->mnemonic, parsed_inst->operand_count);
+                        return ENCODING_ERROR_SENTINEL;
                     }
                 } else { // addi
                     if (parsed_inst->operand_count != 3) {

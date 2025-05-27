@@ -1,51 +1,43 @@
-# codigo gerado pelo gpt para testar funcionalidade do programa
-_start:
-    # U-type: LUI
-    lui x1, 0x12345       # x1 = 0x12345000
+start:
+    # U-Type
+    lui t0, 0x10000       # t0 = 0x10000000 (EndereÃ§o base)
 
-    # J-type: JAL
-    jal x2, label_jal     # x2 = endere�o de retorno (pr�xima instru��o)
+    # I-Type (Arith/Logic)
+    addi t1, zero, 100     # t1 = 100
+    addi t2, zero, 50      # t2 = 50
+    slli t1, t1, 1         # t1 = 100 << 1 = 200
+    srli t2, t2, 1         # t2 = 50 >> 1 = 25
 
-label_jal:
-    # I-type: JALR
-    addi x3, x0, 4
-    jalr x4, x3, 0        # x4 = PC+4, salta para endere�o em x3 (4)
+    # S-Type e I-Type (Memory)
+    sw t1, 0(t0)           # Salva 200 em 0x10000000
+    lw t3, 0(t0)           # Carrega de 0x10000000 para t3 (t3 = 200)
 
-    # B-type: BEQ e BNE
-    addi x5, x0, 1
-    addi x6, x0, 1
-    beq x5, x6, label_beq # salta se x5 == x6
+    # R-Type
+    add t4, t3, t2         # t4 = 200 + 25 = 225
+    sub t5, t3, t2         # t5 = 200 - 25 = 175
+    xor t6, t3, t3         # t6 = 200 ^ 200 = 0
+    or a0, t3, t6          # a0 = 200 | 0 = 200
+    and a1, t3, t6         # a1 = 200 & 0 = 0
 
-    addi x7, x0, 0        # esta instru��o ser� pulada se BEQ for tomada
+    # B-Type
+    beq t6, a1, label_eq   # 0 == 0 -> Salta para label_eq
+    addi a0, a0, 99        # NÃ£o executa
 
-label_beq:
-    addi x8, x0, 2
-    bne x5, x8, label_bne # salta se x5 != x8
+label_eq:
+    bne t4, t5, label_ne   # 225 != 175 -> Salta para label_ne
+    addi a1, a1, 99        # NÃ£o executa
 
-    addi x9, x0, 0        # esta instru��o ser� pulada se BNE for tomada
+label_ne:
+    # J-Type
+    jal ra, sub_routine    # Salta para sub_routine, ra = PC + 4
 
-label_bne:
-    # I-type: LW
-    lui x10, 0x10000
-    sw x5, 0(x10)         # salva x5 na mem�ria
-    lw x11, 0(x10)        # carrega de volta em x11
+    # I-Type (JALR) - Retorna da sub_routine para cÃ¡
+    addi a0, a0, 1         # a0 = 201
 
-    # S-type: SW j� testado acima
+end_loop:
+    # Loop infinito para terminar
+    beq zero, zero, end_loop # Salta para si mesmo
 
-    # I-type: ADDI
-    addi x12, x0, 10      # x12 = 10
-
-    # I-type: SLLI, SRLI
-    slli x13, x12, 1      # x13 = x12 << 1 = 20
-    srli x14, x13, 2      # x14 = x13 >> 2 = 5
-
-    # R-type: ADD, SUB, XOR, OR, AND
-    add x15, x5, x6       # x15 = 1 + 1 = 2
-    sub x16, x15, x5      # x16 = 2 - 1 = 1
-    xor x17, x15, x16     # x17 = 2 ^ 1 = 3
-    or  x18, x17, x5      # x18 = 3 | 1 = 3
-    and x19, x18, x6      # x19 = 3 & 1 = 1
-
-    # Final: loop infinito
-end:
-    jal x0, end
+sub_routine:
+    addi t0, t0, 4         # Apenas uma instruÃ§Ã£o de exemplo
+    jalr zero, 0(ra)       # Retorna para o endereÃ§o em 'ra'

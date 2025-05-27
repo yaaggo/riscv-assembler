@@ -10,7 +10,7 @@
 #define MIF_PRINT_BYTES_BIG_ENDIAN 0
 
 // 32 para a palavra inteira, 8 para imprimir de 8 em 8 bits
-#define MIF_OUTPUT_GRANULARITY 8 
+#define MIF_OUTPUT_GRANULARITY 32 
 
 int main(int argc, char *argv[]) {
     if (argc < 2 || argc > 3) {
