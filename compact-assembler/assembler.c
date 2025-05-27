@@ -471,7 +471,7 @@ static inline uint32_t encode_instruction(const instruction_t* parsed_inst,
                 if (strcmp(entry->mnemonic, "jalr") == 0) {
                     if (parsed_inst->operand_count == 1) {
                         // formato jalr ra
-                        rd = 0;
+                        rd = 1;
                         rs1 = get_register_number(parsed_inst->operands[0]);
                         imm_val = 0;
                         imm_success = true;
