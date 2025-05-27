@@ -40,5 +40,5 @@ end_loop:
 
 sub_routine:
     addi t0, t0, 4         # Apenas uma instruÃ§Ã£o de exemplo
-    jalr ra     
+    jalr t1
 

@@ -128,10 +128,18 @@ static inline uint32_t encode_instruction(const instruction_t* parsed_inst,
                 if (strcmp(entry->mnemonic, "jalr") == 0) {
                     if (parsed_inst->operand_count == 1) {
                         // formato jalr ra
-                        rd = 0;
-                        rs1 = get_register_number(parsed_inst->operands[0]);
+                        const char* reg_name = parsed_inst->operands[0];
+                        int reg_num = get_register_number(reg_name);
+
+                        if (reg_num == -1) {
+                            fprintf(stderr, "erro (linha %u): registrador '%s' invalido para JALR de 1 operando.\n",
+                                    parsed_inst->line_number, reg_name);
+                            return ENCODING_ERROR_SENTINEL;
+                        }
+                        rd = 1;  // rd é sempre o x1 aparentemente (ra)
+                        rs1 = reg_num; // rs1 é também o registrador fornecido
                         imm_val = 0;
-                        imm_success = true;
+                imm_success = true;
                     } else if (parsed_inst->operand_count == 2) {
                         rd = get_register_number(parsed_inst->operands[0]);
                         char imm_str_jalr[32], rs1_str_jalr[8];

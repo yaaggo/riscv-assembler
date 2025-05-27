@@ -40,4 +40,4 @@ end_loop:
 
 sub_routine:
     addi t0, t0, 4         # Apenas uma instruÃ§Ã£o de exemplo
-    jalr zero, 0(ra)       # Retorna para o endereÃ§o em 'ra'
+    jalr x1, x1, 0       # Retorna para o endereÃ§o em 'ra'
